@@ -134,8 +134,9 @@ export interface EvaluationResults {
 }
 
 // App Constants
-export const APP_VERSION = 'v2.0.0';
-export const APP_LAST_UPDATE = '14 มกราคม 2569';
+export const APP_VERSION = 'v2.1.0';
+export const APP_LAST_UPDATE = '16 มกราคม 2569';
 export const APP_NAME = 'CQI-SAR';
 export const APP_TITLE = 'ระบบประเมินโครงการ CQI';
 export const MAX_POSSIBLE_SCORE = 92;
+
