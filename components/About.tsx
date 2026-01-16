@@ -3,7 +3,7 @@
 import React from 'react';
 import { APP_VERSION, APP_LAST_UPDATE, APP_NAME, experts, evaluationCriteria, MAX_POSSIBLE_SCORE } from '@/types/evaluation';
 
-const DEVELOPER_LINK = 'https://www.canva.com/design/DAG7mNgWuVo/zeHJV8U2i8Qcd_InCC21xQ/view?utm_content=DAG7mNgWuVo&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h9a5468a0d1';
+const DEVELOPER_LINK = 'https://portfolio-two-sepia-33.vercel.app/';
 
 export default function About() {
     return (
