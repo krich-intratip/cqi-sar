@@ -6,7 +6,7 @@
         "dev": "next dev",
         "build": "next build",
         "build:cf": "npx @opennextjs/cloudflare build",
-        "deploy:cf": "wrangler deploy",
+        "deploy:cf": "wrangler pages deploy .open-next/assets --project-name cqi-sar --commit-dirty=true",
         "preview:cf": "npx @opennextjs/cloudflare dev",
         "start": "next start",
         "lint": "eslint"
