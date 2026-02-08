@@ -3,7 +3,7 @@
 import React from 'react';
 import { APP_VERSION, APP_LAST_UPDATE, APP_NAME, experts, evaluationCriteria, MAX_POSSIBLE_SCORE } from '@/types/evaluation';
 
-const DEVELOPER_LINK = 'https://portfolio-two-sepia-33.vercel.app/';
+const DEVELOPER_LINK = 'https://krich-portfolio.pk-research.work/';
 
 export default function About() {
     return (

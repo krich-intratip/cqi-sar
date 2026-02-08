@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Globe, Check, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Search, Globe, Check, AlertCircle, Loader2, Eye, EyeOff, ExternalLink } from 'lucide-react';
 import { testConnection } from '@/app/actions/ai';
 import { providerConfig } from '@/lib/providers';
 import { AIConfig } from '@/types/evaluation';
@@ -47,12 +47,17 @@ export default function PhaseSettings({ config, setConfig, onApiTested, onNext }
     };
 
     const providers = [
-        { id: 'gemini', icon: '🔷', name: 'Google Gemini' },
-        { id: 'openai', icon: '🟢', name: 'OpenAI ChatGPT' },
-        { id: 'openrouter', icon: '🔀', name: 'OpenRouter' },
+        { id: 'gemini', icon: '🔷', name: 'Google Gemini', desc: 'ฟรี - แนะนำ' },
+        { id: 'openai', icon: '🟢', name: 'OpenAI ChatGPT', desc: 'มีค่าใช้จ่าย' },
+        { id: 'openrouter', icon: '🔀', name: 'OpenRouter', desc: 'หลาย Models' },
     ];
 
     const currentProvider = config.provider ? providerConfig[config.provider] : null;
+
+    // Group models by tier for OpenRouter
+    const freeModels = currentProvider?.models.filter(m => m.tier === 'free') || [];
+    const paidModels = currentProvider?.models.filter(m => m.tier === 'paid') || [];
+    const hasGroups = freeModels.length > 0 && paidModels.length > 0;
 
     return (
         <div className="bg-bg-card rounded-2xl p-8 shadow-lg animate-fade-in-slide">
@@ -84,6 +89,7 @@ export default function PhaseSettings({ config, setConfig, onApiTested, onNext }
                             />
                             <span className="text-4xl mb-2">{p.icon}</span>
                             <span className="font-semibold">{p.name}</span>
+                            <span className="text-xs text-gray-500 mt-1">{p.desc}</span>
                         </label>
                     ))}
                 </div>
@@ -99,7 +105,7 @@ export default function PhaseSettings({ config, setConfig, onApiTested, onNext }
                                 type={showPassword ? 'text' : 'password'}
                                 value={config.apiKey}
                                 onChange={(e) => setConfig({ ...config, apiKey: e.target.value })}
-                                placeholder="กรอก API Key ของคุณ"
+                                placeholder={currentProvider.keyPlaceholder}
                                 className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-primary-blue focus:outline-none focus:ring-2 focus:ring-primary-blue/20"
                             />
                             <button
@@ -110,10 +116,19 @@ export default function PhaseSettings({ config, setConfig, onApiTested, onNext }
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
                         </div>
-                        <div
-                            className="mt-2 p-3 bg-pastel-yellow rounded-lg text-sm"
-                            dangerouslySetInnerHTML={{ __html: currentProvider.info }}
-                        />
+                        <div className="mt-2 p-3 bg-pastel-yellow rounded-lg text-sm flex items-center gap-2">
+                            <span>💡</span>
+                            <span>{currentProvider.info} </span>
+                            <a
+                                href={currentProvider.keyUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary-blue underline hover:text-primary-dark inline-flex items-center gap-1"
+                            >
+                                {currentProvider.keyUrlLabel}
+                                <ExternalLink size={12} />
+                            </a>
+                        </div>
                     </div>
 
                     <div>
@@ -124,9 +139,26 @@ export default function PhaseSettings({ config, setConfig, onApiTested, onNext }
                             className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-blue focus:outline-none focus:ring-2 focus:ring-primary-blue/20"
                         >
                             <option value="">-- เลือก Model --</option>
-                            {currentProvider.models.map((m) => (
-                                <option key={m.value} value={m.value}>{m.label}</option>
-                            ))}
+                            {hasGroups ? (
+                                <>
+                                    <optgroup label="✅ ฟรี (Free)">
+                                        {freeModels.map((m) => (
+                                            <option key={m.value} value={m.value}>{m.label}</option>
+                                        ))}
+                                    </optgroup>
+                                    <optgroup label="💰 มีค่าใช้จ่าย (Paid)">
+                                        {paidModels.map((m) => (
+                                            <option key={m.value} value={m.value}>{m.label}</option>
+                                        ))}
+                                    </optgroup>
+                                </>
+                            ) : (
+                                currentProvider.models.map((m) => (
+                                    <option key={m.value} value={m.value}>
+                                        {m.tier === 'free' ? '✅ ' : m.tier === 'paid' ? '💰 ' : ''}{m.label}
+                                    </option>
+                                ))
+                            )}
                         </select>
                     </div>
 

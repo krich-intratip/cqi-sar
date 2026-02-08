@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     authors: [{ name: "พล.ท.ดร.กริช อินทราทิพย์" }],
     icons: {
         icon: [
-            { url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>", type: "image/svg+xml" },
+            { url: "/RTA_Logo.png", type: "image/png" },
         ],
-        apple: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>",
+        apple: "/RTA_Logo.png",
     },
 };
 

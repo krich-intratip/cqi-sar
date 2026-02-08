@@ -6,7 +6,8 @@ import {
     EvaluationResults,
     evaluationCriteria,
     experts,
-    MAX_POSSIBLE_SCORE
+    MAX_POSSIBLE_SCORE,
+    APP_VERSION
 } from '@/types/evaluation';
 import { getExpertTotalScore, getQualityBadgeColor, collectAllRecommendations } from '@/lib/evaluation';
 
@@ -100,7 +101,7 @@ ${allRecommendations.map(r => `
 `).join('')}
 
 <hr style="margin: 40px 0;">
-<p style="text-align: center; color: #999;">สร้างโดย CQI-SAR v2.0.0</p>
+<p style="text-align: center; color: #999;">สร้างโดย CQI-SAR ${APP_VERSION}</p>
 </div>
 </body>
 </html>`;
