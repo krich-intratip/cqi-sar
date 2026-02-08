@@ -48,8 +48,9 @@ export default function PhaseSettings({ config, setConfig, onApiTested, onNext }
 
     const providers = [
         { id: 'gemini', icon: '🔷', name: 'Google Gemini', desc: 'ฟรี - แนะนำ' },
-        { id: 'openai', icon: '🟢', name: 'OpenAI ChatGPT', desc: 'มีค่าใช้จ่าย' },
-        { id: 'openrouter', icon: '🔀', name: 'OpenRouter', desc: 'หลาย Models' },
+        { id: 'deepseek', icon: '🔵', name: 'DeepSeek', desc: 'ถูกมาก - ฉลาด' },
+        { id: 'kimi', icon: '🌙', name: 'Kimi (Moonshot)', desc: '256K Context' },
+        { id: 'openrouter', icon: '🔀', name: 'OpenRouter', desc: '300+ Models' },
     ];
 
     const currentProvider = config.provider ? providerConfig[config.provider] : null;
@@ -69,7 +70,7 @@ export default function PhaseSettings({ config, setConfig, onApiTested, onNext }
             {/* Provider Selection */}
             <div className="mb-6">
                 <label className="block font-medium mb-3">เลือก AI Provider ที่ต้องการใช้:</label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {providers.map((p) => (
                         <label
                             key={p.id}

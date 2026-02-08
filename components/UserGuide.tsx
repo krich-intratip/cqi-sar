@@ -3,15 +3,15 @@
 import React, { useState } from 'react';
 import { evaluationCriteria, APP_VERSION, APP_LAST_UPDATE, APP_NAME } from '@/types/evaluation';
 
-type GuideTab = 'functional' | 'nonfunctional' | 'timeline';
+type GuideTab = 'steps' | 'api' | 'faq';
 
 export default function UserGuide() {
-    const [activeTab, setActiveTab] = useState<GuideTab>('functional');
+    const [activeTab, setActiveTab] = useState<GuideTab>('steps');
 
     const tabs = [
-        { id: 'functional' as GuideTab, label: '📋 Functional', desc: 'คู่มือการใช้งาน' },
-        { id: 'nonfunctional' as GuideTab, label: '⚙️ Non-Functional', desc: 'คุณสมบัติระบบ' },
-        { id: 'timeline' as GuideTab, label: '📅 Timeline', desc: 'ประวัติการพัฒนา' },
+        { id: 'steps' as GuideTab, label: '📝 ขั้นตอนการใช้งาน' },
+        { id: 'api' as GuideTab, label: '🔑 วิธีสมัคร API' },
+        { id: 'faq' as GuideTab, label: '❓ คำถามที่พบบ่อย' },
     ];
 
     return (
@@ -25,35 +25,35 @@ export default function UserGuide() {
                 </p>
             </div>
 
-            {/* Sub-tabs */}
-            <div className="flex flex-wrap gap-2 p-2 bg-gray-100 rounded-xl">
+            {/* Section Toggle */}
+            <div className="flex justify-center gap-2 flex-wrap">
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex-1 min-w-[140px] py-3 px-4 rounded-lg font-medium transition-all text-center ${activeTab === tab.id
-                            ? 'bg-white shadow-md -translate-y-0.5 text-primary-dark'
-                            : 'hover:bg-gray-200 text-gray-600'
-                            }`}
+                        className={`px-5 py-3 rounded-lg font-medium transition-all ${
+                            activeTab === tab.id
+                                ? 'bg-primary-blue text-white'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
                     >
-                        <div>{tab.label}</div>
-                        <div className="text-xs mt-0.5">{tab.desc}</div>
+                        {tab.label}
                     </button>
                 ))}
             </div>
 
             {/* Tab Content */}
-            {activeTab === 'functional' && <FunctionalTab />}
-            {activeTab === 'nonfunctional' && <NonFunctionalTab />}
-            {activeTab === 'timeline' && <TimelineTab />}
+            {activeTab === 'steps' && <StepsTab />}
+            {activeTab === 'api' && <ApiGuideTab />}
+            {activeTab === 'faq' && <FaqTab />}
         </div>
     );
 }
 
-function FunctionalTab() {
+function StepsTab() {
     return (
         <div className="space-y-6 animate-fade-in">
-            {/* Step 1: AI Settings - Detailed */}
+            {/* Step 1: AI Settings */}
             <div className="bg-white p-6 rounded-xl border shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                     <span>⚙️</span> ขั้นตอนที่ 1: ตั้งค่า AI Provider
@@ -64,32 +64,35 @@ function FunctionalTab() {
                         <div>
                             <h4 className="font-semibold mb-1">เลือก AI Provider</h4>
                             <p className="text-gray-600 text-sm mb-2">
-                                ระบบรองรับ 3 Provider ดังนี้:
+                                เลือก Provider ที่ต้องการใช้งาน ได้แก่ Google Gemini (แนะนำ - ฟรี), DeepSeek (ถูกมาก), Kimi (256K context), หรือ OpenRouter (300+ โมเดล)
                             </p>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                                    <div className="font-semibold text-sm">🔷 Google Gemini</div>
+                                    <div className="font-semibold text-sm">🔷 Gemini</div>
                                     <div className="text-xs text-gray-600 mt-1">
                                         <span className="bg-green-100 text-green-700 px-1.5 py-0.5 rounded text-xs font-medium">ฟรี</span>
-                                        <span className="ml-1">แนะนำสำหรับผู้เริ่มต้น</span>
+                                        <span className="ml-1">แนะนำ!</span>
                                     </div>
-                                    <div className="text-xs text-gray-500 mt-1">Models: Gemini 2.5 Flash/Pro</div>
                                 </div>
-                                <div className="p-3 bg-green-50 rounded-lg border border-green-100">
-                                    <div className="font-semibold text-sm">🟢 OpenAI ChatGPT</div>
+                                <div className="p-3 bg-sky-50 rounded-lg border border-sky-100">
+                                    <div className="font-semibold text-sm">🔵 DeepSeek</div>
                                     <div className="text-xs text-gray-600 mt-1">
-                                        <span className="bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded text-xs font-medium">มีค่าใช้จ่าย</span>
+                                        <span className="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded text-xs font-medium">ถูกมาก</span>
                                     </div>
-                                    <div className="text-xs text-gray-500 mt-1">Models: GPT-4.1, o3-mini</div>
                                 </div>
                                 <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
+                                    <div className="font-semibold text-sm">🌙 Kimi</div>
+                                    <div className="text-xs text-gray-600 mt-1">
+                                        <span className="bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded text-xs font-medium">256K</span>
+                                    </div>
+                                </div>
+                                <div className="p-3 bg-orange-50 rounded-lg border border-orange-100">
                                     <div className="font-semibold text-sm">🔀 OpenRouter</div>
                                     <div className="text-xs text-gray-600 mt-1">
                                         <span className="bg-green-100 text-green-700 px-1.5 py-0.5 rounded text-xs font-medium">ฟรี</span>
                                         <span className="mx-0.5">+</span>
-                                        <span className="bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded text-xs font-medium">มีค่าใช้จ่าย</span>
+                                        <span className="bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded text-xs font-medium">Paid</span>
                                     </div>
-                                    <div className="text-xs text-gray-500 mt-1">รวมหลาย Models จากหลาย Provider</div>
                                 </div>
                             </div>
                         </div>
@@ -98,36 +101,10 @@ function FunctionalTab() {
                     <div className="flex items-start gap-4">
                         <span className="flex-shrink-0 w-8 h-8 bg-primary-blue text-white rounded-full flex items-center justify-center font-bold">2</span>
                         <div>
-                            <h4 className="font-semibold mb-1">วิธีขอรับ API Key</h4>
-                            <div className="space-y-2">
-                                <div className="p-3 bg-gray-50 rounded-lg text-sm">
-                                    <p className="font-medium">🔷 Google Gemini (ฟรี):</p>
-                                    <ol className="list-decimal pl-5 text-gray-600 text-xs mt-1 space-y-0.5">
-                                        <li>ไปที่ <span className="text-primary-blue">aistudio.google.com/app/apikey</span></li>
-                                        <li>Login ด้วย Google Account</li>
-                                        <li>คลิก &quot;Create API Key&quot;</li>
-                                        <li>คัดลอก API Key มาวางในระบบ</li>
-                                    </ol>
-                                </div>
-                                <div className="p-3 bg-gray-50 rounded-lg text-sm">
-                                    <p className="font-medium">🟢 OpenAI (มีค่าใช้จ่าย):</p>
-                                    <ol className="list-decimal pl-5 text-gray-600 text-xs mt-1 space-y-0.5">
-                                        <li>ไปที่ <span className="text-primary-blue">platform.openai.com/api-keys</span></li>
-                                        <li>สมัครสมาชิกและเติมเครดิต</li>
-                                        <li>คลิก &quot;Create new secret key&quot;</li>
-                                        <li>คัดลอก API Key (จะแสดงครั้งเดียว)</li>
-                                    </ol>
-                                </div>
-                                <div className="p-3 bg-gray-50 rounded-lg text-sm">
-                                    <p className="font-medium">🔀 OpenRouter (ฟรี + มีค่าใช้จ่าย):</p>
-                                    <ol className="list-decimal pl-5 text-gray-600 text-xs mt-1 space-y-0.5">
-                                        <li>ไปที่ <span className="text-primary-blue">openrouter.ai/keys</span></li>
-                                        <li>สมัครสมาชิก (ใช้ Google/GitHub login ได้)</li>
-                                        <li>คลิก &quot;Create Key&quot;</li>
-                                        <li>เลือก Model ฟรี เช่น Gemini, DeepSeek, Qwen</li>
-                                    </ol>
-                                </div>
-                            </div>
+                            <h4 className="font-semibold mb-1">กรอก API Key</h4>
+                            <p className="text-gray-600 text-sm">
+                                กรอก API Key ของ Provider ที่เลือก (ดูวิธีสมัครในหน้า &quot;วิธีสมัคร API&quot;)
+                            </p>
                         </div>
                     </div>
 
@@ -137,7 +114,6 @@ function FunctionalTab() {
                             <h4 className="font-semibold mb-1">เลือก Model / ระบุ Model เอง</h4>
                             <p className="text-gray-600 text-sm">
                                 เลือก AI Model จาก dropdown หรือพิมพ์ชื่อ Model เองสำหรับ Model ใหม่ที่ยังไม่มีในรายการ
-                                ระบบแสดง Model แยกตามประเภท ฟรี/มีค่าใช้จ่าย
                             </p>
                         </div>
                     </div>
@@ -148,7 +124,6 @@ function FunctionalTab() {
                             <h4 className="font-semibold mb-1">ทดสอบการเชื่อมต่อ</h4>
                             <p className="text-gray-600 text-sm">
                                 กดปุ่ม &quot;ทดสอบการเชื่อมต่อ&quot; เพื่อตรวจสอบว่า API Key และ Model ทำงานได้ถูกต้อง
-                                ระบบจะบันทึกการตั้งค่าใน Browser อัตโนมัติ ไม่ต้องกรอกใหม่ทุกครั้ง
                             </p>
                         </div>
                     </div>
@@ -175,7 +150,7 @@ function FunctionalTab() {
                         <div>
                             <h4 className="font-semibold mb-1">ตรวจสอบการอ่านเอกสาร</h4>
                             <p className="text-gray-600 text-sm">
-                                ระบบจะแสดงข้อมูลสรุปของเอกสาร (จำนวนหน้า, คำ, ตัวอักษร) สามารถกดปุ่ม &quot;สรุปประเด็นสำคัญ&quot; ให้ AI ช่วยวิเคราะห์ก่อนประเมินได้
+                                ระบบจะแสดงข้อมูลสรุปของเอกสาร ให้ตรวจสอบความถูกต้อง
                             </p>
                         </div>
                     </div>
@@ -250,8 +225,7 @@ function FunctionalTab() {
                     {evaluationCriteria.map((criteria, index) => (
                         <div
                             key={criteria.id}
-                            className={`p-3 rounded-lg ${index < 4 ? 'bg-blue-50' : index < 6 ? 'bg-green-50' : 'bg-purple-50'
-                                }`}
+                            className={`p-3 rounded-lg ${index < 4 ? 'bg-blue-50' : index < 6 ? 'bg-green-50' : 'bg-purple-50'}`}
                         >
                             <span className="font-semibold">{criteria.id}. {criteria.name}</span>
                             <span className="text-gray-500 text-sm ml-2">(น้ำหนัก x{criteria.weight}, เต็ม {criteria.maxScore})</span>
@@ -284,196 +258,263 @@ function FunctionalTab() {
     );
 }
 
-function NonFunctionalTab() {
+function ApiGuideTab() {
     return (
         <div className="space-y-6 animate-fade-in">
-            {/* Technology Stack */}
+            {/* Gemini */}
             <div className="bg-white p-6 rounded-xl border shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <span>🛠️</span> เทคโนโลยีที่ใช้
+                    1️⃣ <span>✨ Google Gemini (แนะนำ - ฟรี!)</span>
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 bg-blue-50 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-2">Frontend Framework</h4>
-                        <ul className="text-sm text-gray-600 space-y-1">
-                            <li>Next.js 16 (App Router)</li>
-                            <li>React 19</li>
-                            <li>TypeScript 5</li>
-                            <li>Tailwind CSS 4</li>
-                        </ul>
+                <div className="space-y-3">
+                    <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <p className="text-green-800 font-medium">💚 ฟรี! มี Free Tier ใช้งานได้ไม่จำกัด</p>
                     </div>
-                    <div className="p-4 bg-green-50 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-2">AI Integration</h4>
-                        <ul className="text-sm text-gray-600 space-y-1">
-                            <li>Google Gemini API</li>
-                            <li>OpenAI API</li>
-                            <li>OpenRouter API</li>
-                            <li>Server Actions (Secure)</li>
-                        </ul>
-                    </div>
-                    <div className="p-4 bg-purple-50 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-2">Libraries</h4>
-                        <ul className="text-sm text-gray-600 space-y-1">
-                            <li>PDF.js (PDF Processing)</li>
-                            <li>Lucide React (Icons)</li>
-                            <li>Google Fonts - Prompt</li>
-                        </ul>
-                    </div>
-                    <div className="p-4 bg-orange-50 rounded-lg">
-                        <h4 className="font-semibold text-sm mb-2">Hosting & Deploy</h4>
-                        <ul className="text-sm text-gray-600 space-y-1">
-                            <li>Vercel (Primary)</li>
-                            <li>Cloudflare Pages</li>
-                            <li>GitHub Repository</li>
-                        </ul>
+                    <h4 className="font-semibold text-gray-800">ขั้นตอนการสมัคร:</h4>
+                    <ol className="list-decimal pl-5 space-y-2 text-sm text-gray-600">
+                        <li>เข้าไปที่ <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">aistudio.google.com/apikey</a></li>
+                        <li>ล็อกอินด้วย Google Account (ใช้ Gmail ได้เลย)</li>
+                        <li>คลิกปุ่ม <strong>&quot;Create API Key&quot;</strong></li>
+                        <li>เลือก Project หรือสร้างใหม่ แล้วคลิก <strong>&quot;Create API key in new project&quot;</strong></li>
+                        <li>Copy API Key ที่ได้มาใช้งาน</li>
+                    </ol>
+                    <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                        <p className="text-sm text-blue-800">
+                            <strong>โมเดลแนะนำ:</strong> Gemini 2.5 Flash (เร็ว คุ้มค่า) หรือ Gemini 3 Flash (ใหม่สุด)
+                        </p>
                     </div>
                 </div>
             </div>
 
-            {/* Performance */}
+            {/* DeepSeek */}
             <div className="bg-white p-6 rounded-xl border shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <span>⚡</span> Performance & Quality
+                    2️⃣ <span>🔵 DeepSeek (ถูกมาก ฉลาด)</span>
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-4 bg-gray-50 rounded-lg text-center">
-                        <div className="text-2xl font-bold text-green-600">SSR</div>
-                        <div className="text-sm text-gray-600">Server-Side Rendering</div>
+                <div className="space-y-3">
+                    <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                        <p className="text-orange-800 font-medium">⚠️ ต้องเติมเงินก่อนใช้งาน - แต่ราคาถูกมาก!</p>
                     </div>
-                    <div className="p-4 bg-gray-50 rounded-lg text-center">
-                        <div className="text-2xl font-bold text-blue-600">PWA-Ready</div>
-                        <div className="text-sm text-gray-600">Responsive Design</div>
+                    <h4 className="font-semibold text-gray-800">ขั้นตอนการสมัคร:</h4>
+                    <ol className="list-decimal pl-5 space-y-2 text-sm text-gray-600">
+                        <li>เข้าไปที่ <a href="https://platform.deepseek.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">platform.deepseek.com</a></li>
+                        <li>คลิก <strong>&quot;Sign Up&quot;</strong> แล้วลงทะเบียนด้วย Email หรือ Google</li>
+                        <li>ยืนยัน Email (ถ้าสมัครด้วย Email)</li>
+                        <li>เข้าไปที่ <a href="https://platform.deepseek.com/top_up" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">Top Up</a> เพื่อเติมเงิน (ขั้นต่ำ $5)</li>
+                        <li>เข้าไปที่ <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">API Keys</a></li>
+                        <li>คลิก <strong>&quot;Create new API key&quot;</strong> แล้ว Copy มาใช้งาน</li>
+                    </ol>
+                    <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                        <p className="text-sm text-blue-800">
+                            <strong>โมเดลแนะนำ:</strong> deepseek-chat (ฉลาด ราคา $0.14/1M tokens) หรือ deepseek-reasoner (Thinking Mode)
+                        </p>
                     </div>
-                    <div className="p-4 bg-gray-50 rounded-lg text-center">
-                        <div className="text-2xl font-bold text-purple-600">Secure</div>
-                        <div className="text-sm text-gray-600">API Keys ไม่ถูกเก็บบน Server</div>
+                    <div className="mt-2 p-3 bg-green-50 rounded-lg">
+                        <p className="text-sm text-green-800">
+                            <strong>💡 ราคา:</strong> ถูกกว่า GPT-4 ประมาณ 100 เท่า! เติม $5 ใช้ได้หลายหมื่นครั้ง
+                        </p>
                     </div>
                 </div>
             </div>
 
-            {/* Security & Privacy */}
+            {/* Kimi */}
             <div className="bg-white p-6 rounded-xl border shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <span>🔒</span> ความปลอดภัยและความเป็นส่วนตัว
+                    3️⃣ <span>🌙 Kimi / Moonshot (256K Context)</span>
                 </h3>
-                <div className="space-y-3 text-sm text-gray-700">
-                    <div className="flex items-start gap-3">
-                        <span className="text-green-500 font-bold mt-0.5">✓</span>
-                        <p>API Key ถูกเก็บไว้ใน Browser ของผู้ใช้เท่านั้น (LocalStorage) ไม่ถูกส่งไปเก็บที่ Server</p>
+                <div className="space-y-3">
+                    <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                        <p className="text-purple-800 font-medium">🌙 โมเดล 1 ล้านล้าน parameters รองรับ context ยาวมาก</p>
                     </div>
-                    <div className="flex items-start gap-3">
-                        <span className="text-green-500 font-bold mt-0.5">✓</span>
-                        <p>เอกสาร PDF ถูกประมวลผลบน Browser ไม่ถูกอัปโหลดไปเก็บที่ใด</p>
+                    <h4 className="font-semibold text-gray-800">ขั้นตอนการสมัคร:</h4>
+                    <ol className="list-decimal pl-5 space-y-2 text-sm text-gray-600">
+                        <li>เข้าไปที่ <a href="https://platform.moonshot.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">platform.moonshot.ai</a></li>
+                        <li>คลิก <strong>&quot;Sign Up&quot;</strong> หรือ <strong>&quot;登录&quot;</strong> (Login)</li>
+                        <li>สมัครด้วย Email หรือ Google Account</li>
+                        <li>เข้าไปที่ <a href="https://platform.moonshot.ai/console/pay" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">เติมเงิน</a> (เริ่มต้น $1)</li>
+                        <li>เข้าไปที่ <a href="https://platform.moonshot.ai/console" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">Console</a> &gt; API Keys</li>
+                        <li>คลิก <strong>&quot;Create API Key&quot;</strong> แล้ว Copy มาใช้งาน</li>
+                    </ol>
+                    <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                        <p className="text-sm text-blue-800">
+                            <strong>โมเดลแนะนำ:</strong> kimi-k2-0905-preview (ใหม่สุด) หรือ kimi-k2-thinking (Reasoning)
+                        </p>
                     </div>
-                    <div className="flex items-start gap-3">
-                        <span className="text-green-500 font-bold mt-0.5">✓</span>
-                        <p>การสื่อสารกับ AI Provider ใช้ Server Actions ผ่าน HTTPS เท่านั้น</p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <span className="text-green-500 font-bold mt-0.5">✓</span>
-                        <p>ไม่มีการเก็บข้อมูลการใช้งานหรือเอกสารบน Server</p>
+                    <div className="mt-2 p-3 bg-orange-50 rounded-lg">
+                        <p className="text-sm text-orange-800">
+                            <strong>⚠️ หมายเหตุ:</strong> โมเดลบางตัวอาจใช้ไม่ได้ ใช้เฉพาะที่ระบบแนะนำ
+                        </p>
                     </div>
                 </div>
             </div>
 
-            {/* Browser Support */}
+            {/* OpenRouter */}
             <div className="bg-white p-6 rounded-xl border shadow-sm">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <span>🌐</span> Browser ที่รองรับ
+                    4️⃣ <span>🔀 OpenRouter (300+ Models)</span>
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="p-3 bg-gray-50 rounded-lg text-center text-sm">
-                        <div className="text-2xl mb-1">🟢</div>
-                        <div className="font-medium">Chrome 90+</div>
+                <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <p className="text-blue-800 font-medium">✅ มีโมเดลฟรีให้ใช้! รวม Claude, GPT, DeepSeek, Gemini และอื่นๆ</p>
                     </div>
-                    <div className="p-3 bg-gray-50 rounded-lg text-center text-sm">
-                        <div className="text-2xl mb-1">🔵</div>
-                        <div className="font-medium">Edge 90+</div>
+                    <h4 className="font-semibold text-gray-800">ขั้นตอนการสมัคร:</h4>
+                    <ol className="list-decimal pl-5 space-y-2 text-sm text-gray-600">
+                        <li>เข้าไปที่ <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">openrouter.ai</a></li>
+                        <li>คลิก <strong>&quot;Sign In&quot;</strong> แล้วล็อกอินด้วย Google หรือ GitHub</li>
+                        <li>เข้าไปที่ <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">API Keys</a></li>
+                        <li>คลิก <strong>&quot;Create Key&quot;</strong></li>
+                        <li>ตั้งชื่อ Key แล้วคลิก <strong>&quot;Create&quot;</strong></li>
+                        <li>Copy API Key มาใช้งาน</li>
+                    </ol>
+                    <div className="mt-3 p-3 bg-green-50 rounded-lg">
+                        <p className="text-sm text-green-800">
+                            <strong>โมเดลฟรีแนะนำ:</strong> google/gemini-2.5-flash, deepseek/deepseek-chat-v3-0324:free, qwen/qwen3-235b-a22b:free
+                        </p>
                     </div>
-                    <div className="p-3 bg-gray-50 rounded-lg text-center text-sm">
-                        <div className="text-2xl mb-1">🟠</div>
-                        <div className="font-medium">Firefox 90+</div>
+                    <div className="mt-2 p-3 bg-blue-50 rounded-lg">
+                        <p className="text-sm text-blue-800">
+                            <strong>💡 เคล็ดลับ:</strong> เลือกโมเดลที่มี &quot;:free&quot; ต่อท้ายจะใช้ได้ฟรี!
+                        </p>
                     </div>
-                    <div className="p-3 bg-gray-50 rounded-lg text-center text-sm">
-                        <div className="text-2xl mb-1">⚪</div>
-                        <div className="font-medium">Safari 15+</div>
-                    </div>
+                </div>
+            </div>
+
+            {/* Comparison Table */}
+            <div className="bg-white p-6 rounded-xl border shadow-sm">
+                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    📊 <span>เปรียบเทียบ AI Providers</span>
+                </h3>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                        <thead>
+                            <tr className="bg-gray-100">
+                                <th className="p-3 text-left">Provider</th>
+                                <th className="p-3 text-left">ราคา</th>
+                                <th className="p-3 text-left">จุดเด่น</th>
+                                <th className="p-3 text-left">ข้อจำกัด</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="border-b">
+                                <td className="p-3 font-medium">✨ Gemini</td>
+                                <td className="p-3 text-green-600">ฟรี</td>
+                                <td className="p-3">ใช้ง่าย ฟรี รองรับไทยดี</td>
+                                <td className="p-3">Rate limit ต่อนาที</td>
+                            </tr>
+                            <tr className="border-b">
+                                <td className="p-3 font-medium">🔵 DeepSeek</td>
+                                <td className="p-3 text-blue-600">$0.14/1M</td>
+                                <td className="p-3">ฉลาดมาก ราคาถูกมาก</td>
+                                <td className="p-3">ต้องเติมเงินก่อน</td>
+                            </tr>
+                            <tr className="border-b">
+                                <td className="p-3 font-medium">🌙 Kimi</td>
+                                <td className="p-3 text-purple-600">$0.60/1M</td>
+                                <td className="p-3">256K context ยาวมาก</td>
+                                <td className="p-3">ต้องเติมเงิน บางโมเดลใช้ไม่ได้</td>
+                            </tr>
+                            <tr>
+                                <td className="p-3 font-medium">🔀 OpenRouter</td>
+                                <td className="p-3 text-gray-600">หลากหลาย</td>
+                                <td className="p-3">300+ โมเดล มีฟรี</td>
+                                <td className="p-3">ต้องเลือกโมเดลเอง</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     );
 }
 
-function TimelineTab() {
-    const timeline = [
-        {
-            version: 'v2.2.0',
-            date: '8 กุมภาพันธ์ 2569',
-            tag: 'latest',
-            changes: [
-                'ปรับปรุงระบบตั้งค่า AI Provider (รองรับ Free/Paid model grouping)',
-                'ปรับปรุงหน้าคู่มือแบ่งเป็น 3 tabs (Functional, Non-functional, Timeline)',
-                'อัพเดทรายการ Models ล่าสุด (GPT-4.1 Nano, o3-mini)',
-                'เปลี่ยน favicon เป็นตราสัญลักษณ์ ทบ.',
-                'ปรับปรุงหน้า About ด้วยข้อมูลระบบที่ครบถ้วน',
-                'แก้ไข Bugs: HTML report version, model select UX, dependency cleanup',
-                'เพิ่มการ Deploy บน Cloudflare Pages',
-            ]
-        },
-        {
-            version: 'v2.1.0',
-            date: '16 มกราคม 2569',
-            changes: [
-                'เพิ่มระบบ Donation Banner พร้อม QR Code Modal',
-                'ปรับปรุง UI การแสดง QR Code',
-            ]
-        },
-        {
-            version: 'v2.0.0',
-            date: '10 มกราคม 2569',
-            changes: [
-                'สร้างระบบใหม่ด้วย Next.js 16 + React 19 + TypeScript',
-                'รองรับ 3 AI Providers: Google Gemini, OpenAI, OpenRouter',
-                'ระบบผู้เชี่ยวชาญ AI 3 ท่านประเมินตามเกณฑ์ 8 หัวข้อ',
-                'รองรับ PDF Upload และ Text Extraction',
-                'Export รายงานเป็น HTML',
-                'บันทึกการตั้งค่าใน LocalStorage',
-                'Responsive Design รองรับมือถือ',
-            ]
-        },
-    ];
-
+function FaqTab() {
     return (
         <div className="space-y-6 animate-fade-in">
             <div className="bg-white p-6 rounded-xl border shadow-sm">
                 <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
-                    <span>📅</span> ประวัติการพัฒนาระบบ
+                    <span>❓</span> คำถามที่พบบ่อย (FAQ)
                 </h3>
-                <div className="space-y-6">
-                    {timeline.map((release, idx) => (
-                        <div key={release.version} className="relative pl-8 border-l-3 border-gray-200">
-                            <div className={`absolute left-[-8px] top-0 w-4 h-4 rounded-full ${idx === 0 ? 'bg-primary-blue ring-4 ring-primary-blue/20' : 'bg-gray-300'}`} />
-                            <div className="mb-2">
-                                <span className={`text-lg font-bold ${idx === 0 ? 'text-primary-blue' : 'text-gray-700'}`}>
-                                    {release.version}
-                                </span>
-                                {release.tag && (
-                                    <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                                        {release.tag}
-                                    </span>
-                                )}
-                                <span className="ml-3 text-sm text-gray-500">{release.date}</span>
-                            </div>
-                            <ul className="space-y-1.5">
-                                {release.changes.map((change, i) => (
-                                    <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
-                                        <span className="text-gray-400 mt-0.5">•</span>
-                                        <span>{change}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
+                <div className="space-y-4">
+                    <div className="border-b pb-4">
+                        <h4 className="font-semibold text-primary-blue mb-2">
+                            Q: รองรับไฟล์ประเภทใดบ้าง?
+                        </h4>
+                        <p className="text-gray-600 text-sm">
+                            A: ระบบรองรับเฉพาะไฟล์ PDF เท่านั้น โดยขนาดไฟล์ไม่เกิน 25MB
+                            และควรเป็น PDF ที่สามารถ copy ข้อความได้ (ไม่ใช่ภาพสแกน)
+                        </p>
+                    </div>
+
+                    <div className="border-b pb-4">
+                        <h4 className="font-semibold text-primary-blue mb-2">
+                            Q: ขอ API Key ได้จากที่ไหน?
+                        </h4>
+                        <p className="text-gray-600 text-sm">
+                            A: สามารถขอ API Key ได้จาก:
+                        </p>
+                        <ul className="list-disc pl-5 mt-2 text-sm text-gray-600 space-y-1">
+                            <li>Google Gemini: <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">aistudio.google.com/apikey</a> (ฟรี)</li>
+                            <li>DeepSeek: <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">platform.deepseek.com</a> (ต้องเติมเงิน ถูกมาก)</li>
+                            <li>Kimi: <a href="https://platform.moonshot.ai/console" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">platform.moonshot.ai</a> (256K context)</li>
+                            <li>OpenRouter: <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">openrouter.ai/keys</a> (300+ โมเดล มีฟรี)</li>
+                        </ul>
+                    </div>
+
+                    <div className="border-b pb-4">
+                        <h4 className="font-semibold text-primary-blue mb-2">
+                            Q: ผลประเมินจัดเก็บไว้ที่ไหน?
+                        </h4>
+                        <p className="text-gray-600 text-sm">
+                            A: ผลประเมินจัดเก็บไว้ใน Browser Session เท่านั้น
+                            เมื่อปิดหน้าต่างหรือ refresh หน้าเว็บ ข้อมูลจะหายไป
+                            กรุณากดบันทึกรายงานเป็นไฟล์ HTML ไว้ก่อนปิดหน้าเว็บ
+                        </p>
+                    </div>
+
+                    <div className="border-b pb-4">
+                        <h4 className="font-semibold text-primary-blue mb-2">
+                            Q: API Key ปลอดภัยหรือไม่?
+                        </h4>
+                        <p className="text-gray-600 text-sm">
+                            A: API Key จะถูกเก็บไว้ใน Local Storage ของ Browser เท่านั้น
+                            ไม่ได้ส่งไปเก็บที่ Server ของเรา การเรียก AI จะทำผ่าน Server Actions ที่ปลอดภัย
+                        </p>
+                    </div>
+
+                    <div className="border-b pb-4">
+                        <h4 className="font-semibold text-primary-blue mb-2">
+                            Q: ใช้เวลาประเมินนานแค่ไหน?
+                        </h4>
+                        <p className="text-gray-600 text-sm">
+                            A: การประเมินใช้เวลาประมาณ 1-2 นาที ขึ้นอยู่กับขนาดเอกสาร
+                            และความเร็วของ AI Provider ที่เลือกใช้
+                        </p>
+                    </div>
+
+                    <div className="border-b pb-4">
+                        <h4 className="font-semibold text-primary-blue mb-2">
+                            Q: ทำไมถึงมีผู้ทรงคุณวุฒิ 3 ท่าน?
+                        </h4>
+                        <p className="text-gray-600 text-sm">
+                            A: เพื่อให้การประเมินมีมุมมองที่หลากหลาย ผู้ทรงคุณวุฒิแต่ละท่านจะเน้นประเด็นที่แตกต่างกัน:
+                        </p>
+                        <ul className="list-disc pl-5 mt-2 text-sm text-gray-600 space-y-1">
+                            <li><strong>ดร.สมชาย:</strong> กระบวนการ PDCA, การวิเคราะห์สาเหตุ, หลักฐานเชิงประจักษ์</li>
+                            <li><strong>รศ.ดร.มาลี:</strong> ผลลัพธ์ที่วัดได้, ความยั่งยืน, ผลกระทบต่อผู้รับบริการ</li>
+                            <li><strong>ศ.ดร.วิชัย:</strong> นวัตกรรม, การถ่ายทอดความรู้, การขยายผล</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 className="font-semibold text-primary-blue mb-2">
+                            Q: ผลประเมินน่าเชื่อถือได้มากน้อยเพียงใด?
+                        </h4>
+                        <p className="text-gray-600 text-sm">
+                            A: ผลประเมินเป็นการประเมินเบื้องต้นโดย AI
+                            ควรใช้ประกอบการพิจารณาร่วมกับการรีวิวจากผู้เชี่ยวชาญมนุษย์
+                            เพื่อให้ได้ผลการประเมินที่ครบถ้วนและแม่นยำ
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
